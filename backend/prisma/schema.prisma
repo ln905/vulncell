@@ -1,0 +1,120 @@
+// Mô hình dữ liệu VulnCell — PostgreSQL (Prisma)
+// 4 bảng: User · Report · ReportEvent (timeline) · ReputationLedger (sổ điểm)
+// 4 enum:  Role · ReportState · Severity · EventType
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  HACKER
+  ADMIN
+}
+
+// Undisclosed: NONE, PENDING, TRIAGED · Disclosed: RESOLVED, DUPLICATE, INFORMATIVE, NOT_APPLICABLE, SPAM
+enum ReportState {
+  NONE
+  PENDING
+  TRIAGED
+  RESOLVED
+  DUPLICATE
+  INFORMATIVE
+  NOT_APPLICABLE
+  SPAM
+}
+
+enum Severity {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum EventType {
+  SUBMITTED
+  COMMENT
+  STATE_CHANGE
+  BOUNTY
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(HACKER)
+  avatar       String?  @db.Text // data URL (resize 256px ở client)
+  bio          String?  @db.VarChar(160)
+  // Denormalized: tổng reputation cả đời — cập nhật cùng transaction với ReputationLedger
+  reputation   Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  reports       Report[]
+  events        ReportEvent[]
+  ledgerEntries ReputationLedger[]
+
+  @@index([reputation])
+}
+
+model Report {
+  id               String      @id @default(uuid())
+  reporterId       String
+  reporter         User        @relation(fields: [reporterId], references: [id])
+  target           String
+  weakness         String
+  cveId            String?
+  shortDescription String
+  details          String
+  severity         Severity    @default(NONE) // NONE = chưa triage
+  state            ReportState @default(NONE) // code đặt PENDING khi nộp
+  bounty           Int? // chỉ khi RESOLVED
+  createdAt        DateTime    @default(now())
+  disclosedAt      DateTime? // thời điểm vào nhóm disclosed
+
+  events ReportEvent[]
+
+  @@index([state])
+  @@index([weakness])
+  @@index([createdAt])
+  @@index([state, createdAt], map: "Report_state_createdAt_idx")
+  @@index([severity, createdAt], map: "Report_severity_createdAt_idx")
+  @@index([reporterId, createdAt], map: "Report_reporterId_createdAt_idx")
+  // GIN + pg_trgm cho tìm kiếm ILIKE '%...%'
+  @@index([weakness(ops: raw("gin_trgm_ops"))], type: Gin, map: "Report_weakness_trgm_idx")
+  @@index([shortDescription(ops: raw("gin_trgm_ops"))], type: Gin, map: "Report_shortDescription_trgm_idx")
+  @@index([target(ops: raw("gin_trgm_ops"))], type: Gin, map: "Report_target_trgm_idx")
+}
+
+model ReportEvent {
+  id           String       @id @default(uuid())
+  reportId     String
+  report       Report       @relation(fields: [reportId], references: [id])
+  actorId      String
+  actor        User         @relation(fields: [actorId], references: [id])
+  type         EventType
+  content      String? // comment (nếu type = COMMENT)
+  fromState    ReportState? // trạng thái trước (nếu STATE_CHANGE)
+  toState      ReportState? // trạng thái sau
+  bountyAmount Int? // số tiền (nếu BOUNTY)
+  createdAt    DateTime     @default(now())
+
+  @@index([reportId])
+}
+
+// Sổ điểm append-only: Reputation = SUM(tất cả) · Signal = SUM(365 ngày gần nhất)
+model ReputationLedger {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  points    Int // +7 RESOLVED · +2 DUPLICATE · 0 INFORMATIVE · -5 NOT_APPLICABLE · -10 SPAM
+  reason    String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

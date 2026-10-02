@@ -1,0 +1,127 @@
+{
+    "metrics": {
+        "http_req_connecting": {
+            "avg": 0.00319702479338843,
+            "min": 0,
+            "med": 0,
+            "max": 1.1008,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "data_received": {
+            "count": 544615,
+            "rate": 21703.443445785437
+        },
+        "data_sent": {
+            "count": 253762,
+            "rate": 10112.665306114235
+        },
+        "login_429_DA_BI_CHAN": {
+            "count": 1205,
+            "rate": 48.02043526559395
+        },
+        "http_reqs": {
+            "count": 1210,
+            "rate": 48.21969018370845
+        },
+        "http_req_failed": {
+            "passes": 1210,
+            "fails": 0,
+            "value": 1
+        },
+        "vus": {
+            "value": 5,
+            "min": 5,
+            "max": 5
+        },
+        "http_req_receiving": {
+            "p(90)": 1.9459800000000007,
+            "p(95)": 2.4605599999999996,
+            "avg": 0.8217820661157025,
+            "min": 0,
+            "med": 0.5992500000000001,
+            "max": 3.7802
+        },
+        "checks": {
+            "passes": 1210,
+            "fails": 0,
+            "value": 1
+        },
+        "http_req_duration": {
+            "med": 2.51405,
+            "max": 82.9172,
+            "p(90)": 4.079,
+            "p(95)": 4.464565,
+            "avg": 3.000173140495868,
+            "min": 0.4344
+        },
+        "http_req_tls_handshaking": {
+            "p(95)": 0,
+            "avg": 0,
+            "min": 0,
+            "med": 0,
+            "max": 0,
+            "p(90)": 0
+        },
+        "vus_max": {
+            "value": 5,
+            "min": 5,
+            "max": 5
+        },
+        "http_req_sending": {
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.005929338842975206,
+            "min": 0,
+            "med": 0,
+            "max": 0.8062
+        },
+        "http_req_waiting": {
+            "med": 1.72945,
+            "max": 82.372,
+            "p(90)": 3.4486200000000005,
+            "p(95)": 3.976685,
+            "avg": 2.1724617355371922,
+            "min": 0.3836
+        },
+        "login_401_sai_mat_khau": {
+            "count": 5,
+            "rate": 0.19925491811449772
+        },
+        "iteration_duration": {
+            "avg": 103.56187214876024,
+            "min": 100.6227,
+            "med": 102.9661,
+            "max": 206.9366,
+            "p(90)": 104.58595000000001,
+            "p(95)": 104.936795
+        },
+        "iterations": {
+            "count": 1210,
+            "rate": 48.21969018370845
+        },
+        "http_req_blocked": {
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.09666735537190081,
+            "min": 0,
+            "med": 0,
+            "max": 23.3073
+        }
+    },
+    "root_group": {
+        "checks": {
+            "bi chan 429 hoac sai 401": {
+                "name": "bi chan 429 hoac sai 401",
+                "path": "::bi chan 429 hoac sai 401",
+                "id": "f103b8fc91cac68c90f78de053039698",
+                "passes": 1210,
+                "fails": 0
+            }
+        },
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {}
+    }
+}

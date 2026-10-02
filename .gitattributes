@@ -1,0 +1,12 @@
+# Chuẩn hoá line-ending: file text dùng LF để chạy nhất quán trên Linux
+* text=auto eol=lf
+
+# Ảnh / font coi là binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary

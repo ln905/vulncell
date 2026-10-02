@@ -1,0 +1,34 @@
+{
+  "name": "vulncell",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "dev:api": "npm --prefix backend run dev",
+    "dev:web": "npm --prefix frontend run dev",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "demo": "docker compose -p vulncell-demo -f docker-compose.demo.yml up --build",
+    "demo:down": "docker compose -p vulncell-demo -f docker-compose.demo.yml down",
+    "kill:api": "powershell -NoProfile -Command \"Get-NetTCPConnection -LocalPort 4000 -State Listen -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }; Write-Host 'port 4000 da duoc giai phong'\"",
+    "migrate": "npm --prefix backend run prisma:migrate",
+    "seed": "npm --prefix backend run seed",
+    "seed:reset": "npm --prefix backend run seed:reset",
+    "seed:bench": "npm --prefix backend run seed:bench",
+    "seed:bench:clean": "npm --prefix backend run seed:bench:clean",
+    "smoke": "npm --prefix backend run smoke",
+    "build:web": "npm --prefix frontend run build",
+    "serve:bench": "cross-env RATE_LIMIT_DISABLED=true npm --prefix backend start",
+    "serve:bench:nocache": "cross-env RATE_LIMIT_DISABLED=true CACHE_DISABLED=true npm --prefix backend start",
+    "bench:search": "k6 run bench/k6/dashboard-search.js",
+    "bench:case": "k6 run bench/k6/case-detail.js",
+    "bench:leaderboard": "k6 run bench/k6/leaderboard.js",
+    "bench:bruteforce": "k6 run bench/k6/login-bruteforce.js",
+    "bench:spam": "k6 run bench/k6/api-spam.js",
+    "bench:results": "node bench/read-results.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cross-env": "^7.0.3"
+  }
+}

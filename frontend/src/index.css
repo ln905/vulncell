@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Theme: font Figtree (gần với Effra của HackerOne) + bảng màu "gold" theo logo.
+   Đặt trong @theme của Tailwind v4 -> dùng được class bg-gold-500, text-gold-300...
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Figtree Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* Vàng gold lấy theo logo (màu gốc ~#c9a26b) */
+  --color-gold-100: #f4ead4;
+  --color-gold-200: #e9d6ab;
+  --color-gold-300: #dcbe80;
+  --color-gold-400: #d0ad6e;
+  --color-gold-500: #c9a26b;
+  --color-gold-600: #a8823f;
+  --color-gold-700: #866631;
+  --color-gold-800: #5e4823;
+  --color-gold-900: #3f3017;
+  --color-gold-950: #241b0c;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+/* Chuyển màn: fade + nhích nhẹ để trải nghiệm mượt hơn */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-enter {
+  animation: page-enter 0.22s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: #09090b; /* zinc-950 */
+  color: #f4f4f5;
+}
+
+/* ---------- Style cho nội dung Markdown (không dùng plugin typography) ---------- */
+.md-body {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #d4d4d8;
+  word-break: break-word;
+}
+.md-body > :first-child { margin-top: 0; }
+.md-body h1, .md-body h2, .md-body h3, .md-body h4 {
+  color: #fafafa;
+  font-weight: 600;
+  margin: 1.1rem 0 0.4rem;
+}
+.md-body h1 { font-size: 1.3rem; border-bottom: 1px solid #27272a; padding-bottom: 0.3rem; }
+.md-body h2 { font-size: 1.15rem; border-bottom: 1px solid #27272a; padding-bottom: 0.25rem; }
+.md-body h3 { font-size: 1rem; }
+.md-body p { margin: 0.55rem 0; }
+.md-body ul { list-style: disc; padding-left: 1.4rem; margin: 0.55rem 0; }
+.md-body ol { list-style: decimal; padding-left: 1.4rem; margin: 0.55rem 0; }
+.md-body li { margin: 0.15rem 0; }
+.md-body a { color: var(--color-gold-300); text-decoration: underline; text-underline-offset: 2px; }
+.md-body code {
+  background: #27272a;
+  border-radius: 4px;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.md-body pre {
+  background: #131316;
+  border: 1px solid #27272a;
+  border-radius: 0.5rem;
+  padding: 0.75rem 0.9rem;
+  overflow-x: auto;
+  margin: 0.7rem 0;
+}
+.md-body pre code { background: transparent; padding: 0; font-size: 0.8rem; }
+.md-body blockquote {
+  border-left: 3px solid #3f3f46;
+  padding-left: 0.8rem;
+  color: #a1a1aa;
+  margin: 0.7rem 0;
+}
+.md-body table { border-collapse: collapse; margin: 0.7rem 0; font-size: 0.82rem; }
+.md-body th, .md-body td { border: 1px solid #3f3f46; padding: 0.25rem 0.6rem; }
+.md-body th { background: #18181b; }
+.md-body img { max-width: 100%; border-radius: 0.5rem; }
+.md-body hr { border-color: #27272a; margin: 1rem 0; }
